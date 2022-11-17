@@ -1,13 +1,14 @@
 import numpy as np
 
 class Perceptron:
-    def __init__(self, lr=0.01, number_itration=100, bais=True):
+    def __init__(self, lr=0.01, number_itration=100, mse = 0.0,bais=True):
         self.lr = lr
         self.number_itration = number_itration
         self.with_bais = bais
         self.weight = None
         self.bais = None
         self.activation_function = self.__signum_Function
+        self.mse = mse
 
     def fit(self, X, Y):
         m = X.shape[0]
@@ -15,6 +16,7 @@ class Perceptron:
 
         self.weight = np.random.rand(no_feature)
         self.bais = 0
+
         for _ in range(self.number_itration):
             for index, x_i in enumerate(X):
 
@@ -23,8 +25,7 @@ class Perceptron:
                 else:
                     net_value = np.dot(self.weight.T, x_i)
 
-
-                y_prdection = self.activation_function(net_value)
+                y_prdection = self.__signum_Function(net_value)
 
                 if Y[index] != y_prdection:
                     loss = Y[index] - y_prdection
@@ -34,6 +35,10 @@ class Perceptron:
 
                     if self.with_bais:
                         self.bais = self.bais + dw
+
+            MSE = (1 / 2 * m) * sum((Y - self.predict(X)) ** 2)
+            if MSE <= self.mse:
+                break
 
     def predict(self, X):
         if self.with_bais:

@@ -10,6 +10,7 @@ import numpy as np
 learning_rate = mainVariables.eta
 epochs = mainVariables.m
 with_bias = mainVariables.bias
+mse = mainVariables.mse
 
 # columns that will be removed from x_train , x_test
 Li_col = ["body_mass_g","gender","flipper_length_mm","bill_depth_mm","bill_length_mm"]

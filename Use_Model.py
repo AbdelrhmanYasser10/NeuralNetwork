@@ -7,7 +7,7 @@ pre.DrawAllCombinations()
 
 # Using model
 # train and test the model from the Perceptron class
-p = Perceptron(lr=pre.learning_rate, number_itration=pre.epochs, bais=pre.with_bias)
+p = Perceptron(lr=pre.learning_rate, number_itration=pre.epochs, bais=pre.with_bias , mse= pre.mse)
 y_train = pre.y_train.to_numpy()
 y_test = pre.y_test.to_numpy()
 y_train[y_train == 0] = -1

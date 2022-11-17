@@ -3,12 +3,14 @@ from tkinter import messagebox
 
 # variables
 features = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'gender', 'body_mass_g']
+classes = ["Adelie", "Gentoo", "Chinstrap"]
 firstFeature = ""
 secondFeature = ""
 class1 = ""
 class2 = ""
 eta = 0
 m = 0
+mse = 0
 bias = False
 
 master = Tk()
@@ -60,15 +62,35 @@ def validateEpochs():
         flag = isInteger(epochsEntry.get())
         if flag:
             m = int(epochsEntry.get())
-            label = "Do You Want Bias?"
+            label = "Enter MSE"
             messageVar.config(text=label)
             epochsEntry.pack_forget()
-            firstFinalChoice.pack(anchor=CENTER, expand=YES)
-            secondFinalChoice.pack(anchor=CENTER, expand=YES)
-            my_Button.config(command=handlingIfWeWantBiasOrNot)
+            mseEntry.focus_set()
+            mseEntry.pack(anchor= CENTER,expand=YES)
+            my_Button.config(command=validateMSE)
         else:
             messagebox.showerror("Error", "Enter a Integer number")
 
+def validateMSE():
+    if mseEntry.get() == "":
+        messagebox.showerror("Error", "You Enter an empty text")
+    else:
+        global mse
+        flag1 = isfloat(mseEntry.get())
+        flag2 = isInteger(mseEntry.get())
+        if flag1 or flag2:
+            label = "Do you want bias?"
+            messageVar.config(text=label)
+            mseEntry.pack_forget()
+            firstFinalChoice.pack(anchor=CENTER, expand=YES)
+            secondFinalChoice.pack(anchor=CENTER, expand=YES)
+            my_Button.config(command=handlingIfWeWantBiasOrNot)
+            if flag2:
+                mse = int(mseEntry.get())
+            else:
+                mse = float(mseEntry.get())
+        else:
+            messagebox.showerror("Error", "Enter a float number")
 
 def validateLearningRate():
     if learningRateEntry.get() == "":
@@ -91,43 +113,42 @@ def validateLearningRate():
         else:
             messagebox.showerror("Error", "Enter a float number")
 
-def classesSelected():
-    global class1
+def selectSecondClass():
     global class2
-    if v.get() != 0:
-        if v.get() == 1:
-            class1 ="Adelie"
-            class2 ="Gentoo"
-        elif v.get() == 2:
-            class1 ="Adelie"
-            class2 ="Chinstrap"
-        else:
-            class1 ="Gentoo"
-            class2 ="Chinstrap"
+    class2 = classVar.get()
+    label = "Enter learning rate"
+    messageVar.config(text=label)
+    global allClasses
+    allClasses.pack_forget()
+    learningRateEntry.focus_set()
+    learningRateEntry.pack(anchor= CENTER,expand=YES)
+    my_Button.config(command=validateLearningRate)
 
-        r1.pack_forget()
-        r2.pack_forget()
-        r3.pack_forget()
-        label = "Enter learning rate"
-        messageVar.config(text=label)
-        learningRateEntry.focus_set()
-        learningRateEntry.pack(anchor= CENTER,expand=YES)
-        my_Button.config(command=validateLearningRate)
-    else:
-        messagebox.showerror("Error", "Make Sure to choose an option")
+def selectFirstClass():
+    global class1
+    label = "Choose The Second Class Classes You Need"
+    messageVar.config(text=label)
+    messageVar.pack(anchor=W)
+    class1 = classVar.get()
+    global allClasses
+    r_index = allClasses['menu'].index(classVar.get())  # index of selected option.
+    allClasses['menu'].delete(r_index)  # deleted the option
+    classVar.set(allClasses['menu'].entrycget(0, "label"))
+    allClasses.config(menu=allClasses['menu'])
+    allClasses.pack(anchor=CENTER, expand=YES)
+    my_Button.config(command=selectSecondClass)
 
 
 def secondFeatureSelected():
     global secondFeature
     secondFeature = variable.get()
     feature.pack_forget()
-    label = "Choose The Classes You Need"
+    label = "Choose The First Class Classes You Need"
     messageVar.config(text=label)
     messageVar.pack(anchor=W)
-    r1.pack(anchor=W)
-    r2.pack(anchor=W)
-    r3.pack(anchor=W)
-    my_Button.config(command=classesSelected)
+    global allClasses
+    allClasses.pack(anchor=CENTER, expand=YES)
+    my_Button.config(command=selectFirstClass)
 
 
 def firstFeatureSelected():
@@ -160,26 +181,26 @@ feature = OptionMenu(master, variable, *features)
 feature.pack(anchor=CENTER,expand=YES)
 
 # that button function editable when we go far with GUI
-global myButton
 my_Button = Button(master, text="Next", command=firstFeatureSelected, width=100,bg="lightblue")
 my_Button.pack(anchor=CENTER,side=BOTTOM)
 
 # class values
-v = IntVar()
-r1 = Radiobutton(master, text='C1[Adelie] & C2[Gentoo]', variable=v, value=1)
-r2 = Radiobutton(master, text='C1[Adelie] & C3[Chinstrap]', variable=v, value=2)
-r3 = Radiobutton(master, text='C2[Gentoo] & C3[Chinstrap]', variable=v, value=3)
+classVar = StringVar(master)
+classVar.set(classes[0])
+allClasses = OptionMenu(master, classVar, *classes)
+
 
 # Entries
 learningRateEntry = Entry(master)
 epochsEntry = Entry(master)
 biasEntry = Entry(master)
+mseEntry = Entry(master)
 
 # bias handling variables
 biasOrNot = IntVar()
 firstFinalChoice = Radiobutton(master, text='YES', variable=biasOrNot, value=1)
 secondFinalChoice = Radiobutton(master, text='NO', variable=biasOrNot, value=2)
 
+# Add mse
+
 master.mainloop()
-
-
