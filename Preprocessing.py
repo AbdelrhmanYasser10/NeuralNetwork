@@ -4,6 +4,7 @@ import statistics
 from sklearn.model_selection import train_test_split
 import GUI_handling as mainVariables
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 
 # Main Variables Getting from GUI
@@ -13,12 +14,15 @@ with_bias = mainVariables.bias
 mse = mainVariables.mse
 
 # columns that will be removed from x_train , x_test
-Li_col = ["body_mass_g","gender","flipper_length_mm","bill_depth_mm","bill_length_mm"]
+Li_col = ["body_mass_g", "gender", "flipper_length_mm", "bill_depth_mm", "bill_length_mm"]
 Li_col.remove(mainVariables.firstFeature)
 Li_col.remove(mainVariables.secondFeature)
 
 # read data
 dataset = pd.read_csv("data_set/penguins.csv")
+
+
+
 
 # split data into train_test depending on the data needed only from 2 classes
 # [60 [30 class 1 , 30 class 2] train , 40 [20 class 1 , 20 class 2]] test
@@ -60,6 +64,12 @@ x_train = x_train.sample(frac=1)
 x_test = x_test.sample(frac=1)
 y_train = x_train["species"]
 y_test = x_test["species"]
+
+# normalize data
+for i in ['bill_length_mm', 'body_mass_g', 'bill_depth_mm', 'flipper_length_mm']:
+    scaler = MinMaxScaler()
+    x_train[[i]] = scaler.fit_transform(x_train[[i]])
+    x_test[[i]] = scaler.fit_transform(x_test[[i]])
 
 # drop all columns except the features that needed
 Li_col.append("species")

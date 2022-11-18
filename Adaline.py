@@ -1,6 +1,8 @@
+import math
+
 import numpy as np
 
-class Perceptron:
+class Adaline:
     def __init__(self, lr=0.01, number_itration=100, mse = 0.0,bais=True):
         self.lr = lr
         self.number_itration = number_itration
@@ -18,17 +20,16 @@ class Perceptron:
         self.bais = 0
 
         for _ in range(self.number_itration):
+            all_predictions = []
             for index, x_i in enumerate(X):
-
                 if self.with_bais:
                     net_value = np.dot(self.weight.T, x_i) + self.bais
                 else:
                     net_value = np.dot(self.weight.T, x_i)
-
-                y_prdection = self.__signum_Function(net_value)
-
-                if Y[index] != y_prdection:
-                    loss = Y[index] - y_prdection
+                y_prediction = net_value
+                all_predictions.append(y_prediction)
+                if Y[index] != y_prediction:
+                    loss = Y[index] - y_prediction
                     dw = self.lr * loss
 
                     self.weight = self.weight + dw * x_i
@@ -36,7 +37,12 @@ class Perceptron:
                     if self.with_bais:
                         self.bais = self.bais + dw
 
-            MSE = (1 / 2 * m) * sum((Y - self.predict(X)) ** 2)
+            MSE = 0.5 * m * sum((Y - all_predictions)**2)
+            rmse = math.sqrt(MSE)
+            print("iteration number" + str(_ + 1))
+            print("threshold" + str(self.mse))
+            print("Iteration MSE : " + str(MSE))
+            print("RMSE: " + str(rmse))
             if MSE <= self.mse:
                 break
 
