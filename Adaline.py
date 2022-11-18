@@ -38,11 +38,6 @@ class Adaline:
                         self.bais = self.bais + dw
 
             MSE = 0.5 * m * sum((Y - all_predictions)**2)
-            rmse = math.sqrt(MSE)
-            print("iteration number" + str(_ + 1))
-            print("threshold" + str(self.mse))
-            print("Iteration MSE : " + str(MSE))
-            print("RMSE: " + str(rmse))
             if MSE <= self.mse:
                 break
 
