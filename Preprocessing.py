@@ -21,9 +21,6 @@ Li_col.remove(mainVariables.secondFeature)
 # read data
 dataset = pd.read_csv("data_set/penguins.csv")
 
-
-
-
 # split data into train_test depending on the data needed only from 2 classes
 # [60 [30 class 1 , 30 class 2] train , 40 [20 class 1 , 20 class 2]] test
 x_class1 = dataset[dataset['species'] == mainVariables.class1].drop(columns="species")
