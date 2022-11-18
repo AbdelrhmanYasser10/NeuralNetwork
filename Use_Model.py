@@ -7,17 +7,17 @@ pre.DrawAllCombinations()
 
 # Using model
 # train and test the model from the Perceptron class
-p = Adaline(lr=pre.learning_rate, number_itration=pre.epochs, bais=pre.with_bias, mse= pre.mse)
+adaline = Adaline(lr=pre.learning_rate, number_itration=pre.epochs, bais=pre.with_bias, mse= pre.mse)
 y_train = pre.y_train.to_numpy()
 y_test = pre.y_test.to_numpy()
 y_train[y_train == 0] = -1
 y_test[y_test == 0] = -1
 
-p.fit(pre.x_train.to_numpy(), y_train)
-prediction = p.predict(pre.x_test.to_numpy())
-print("accuracy : " + str(p.get_accuracy(y_test, prediction)*100)+"%")
-tp, tn, fp, fn = p.confusion_Matrix(prediction, y_test)
-p.print_Confusion_Matrix(tp, tn, fp, fn)
+adaline.fit(pre.x_train.to_numpy(), y_train)
+prediction = adaline.predict(pre.x_test.to_numpy())
+print("accuracy : " + str(adaline.get_accuracy(y_test, prediction) * 100) + "%")
+tp, tn, fp, fn = adaline.confusion_Matrix(prediction, y_test)
+adaline.print_Confusion_Matrix(tp, tn, fp, fn)
 
 
 # plot perceptron line
@@ -45,7 +45,7 @@ plt.scatter(all_first_feature_class2_points, all_second_feature_class2_points, c
 plt.legend()
 x_min = pre.x_train[pre.mainVariables.firstFeature].min()
 x_max = pre.x_train[pre.mainVariables.firstFeature].max()
-y_min, y_max = p.get_y_min_and_y_max(x_min,x_max)
+y_min, y_max = adaline.get_y_min_and_y_max(x_min, x_max)
 plt.plot([x_min,x_max], [y_min, y_max])
 plt.title("Perceptron Line")
 plt.show()

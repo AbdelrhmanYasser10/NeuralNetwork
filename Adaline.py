@@ -37,7 +37,7 @@ class Adaline:
                     if self.with_bais:
                         self.bais = self.bais + dw
 
-            MSE = 0.5 * m * sum((Y - all_predictions)**2)
+            MSE = 1 / (2 * len(Y)) * sum((Y - all_predictions)**2)
             if MSE <= self.mse:
                 break
 
