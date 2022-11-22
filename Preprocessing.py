@@ -3,13 +3,17 @@ import matplotlib.pyplot as plt
 import statistics
 from sklearn.model_selection import train_test_split
 import GUI_handling as mainVariables
+import InputForm_GUI 
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 
 # Main Variables Getting from GUI
+'''
 learning_rate = mainVariables.eta
 epochs = mainVariables.m
 with_bias = mainVariables.bias
+'''
+hiddenlayers,neurons,learning_rate,epochs,with_bias,activation = InputForm_GUI.getInputs()
 
 # columns that will be removed from x_train , x_test
 Li_col = ["body_mass_g","gender","flipper_length_mm","bill_depth_mm","bill_length_mm"]

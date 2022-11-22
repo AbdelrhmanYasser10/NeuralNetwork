@@ -1,13 +1,19 @@
 import numpy as np
 
 class Perceptron:
-    def __init__(self, lr=0.01, number_itration=100, bais=True):
+    def __init__(self, lr=0.01,activation = "sigmoid",derivative = False,finalPerceptron = False, number_itration=100, bais=True):
         self.lr = lr
         self.number_itration = number_itration
         self.with_bais = bais
         self.weight = None
         self.bais = None
-        self.activation_function = self.__signum_Function
+        self.derivative = derivative
+        if activation == "sigmoid":
+            self.activation_function = self.__sigmoid_function
+        elif activation == "tanh":
+            self.activation_function = self.__tanh_function
+        else :
+            self.activation_function = self.__signum_Function
 
     def fit(self, X, Y):
         m = X.shape[0]
@@ -41,12 +47,24 @@ class Perceptron:
         else:
             net_values = np.dot(X, self.weight)
 
-        Y_prediction = self.__signum_Function(net_values)
+        Y_prediction = self.activation_function(net_values)
         return Y_prediction
 
     def __signum_Function(self, X):
         output = np.where(X > 0, 1, -1)
         return output
+
+    def __sigmoid_function(self,X):
+        if self.derivative == False:
+            output = 1/(1+np.exp(-X))
+        else : 
+            output 
+        return output
+
+    def __tanh_function(self,X):
+        output = np.tanh(X)
+        return output
+    
 
     def confusion_Matrix(self,y_prediction , y_actual):
         tp = 0
